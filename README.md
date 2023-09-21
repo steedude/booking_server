@@ -57,3 +57,9 @@ This is an api of the booking backend, the database uses MonogoDB.
 - [dotenv](https://github.com/motdotla/dotenv) 從 .env 文件中自動載入環境變數到 `process.env`
 - [passport](https://www.passportjs.org/) 處理驗證的 middleware
 - [mongoose](https://mongoosejs.com/docs/) 是一個 ODM 套件，採用 schema-based 讓我們能用較簡單的方式來操作 MongoDB
+
+## Development Note
+
+- Schema 統一放置在 `models` 資料夾中
+- API 邏輯分別放在 `controllers/client` 和 `controllers/admin` 中實作
+- API route 分別放在 `routes/client` 和 `routes/admin` 中依照 Schema 分類各自開立檔案，並由同層 `index.ts` 統一設置
