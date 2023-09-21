@@ -1,9 +1,10 @@
 import express from 'express';
-// import passport from '@/config/passport';
 import userController from '@/controllers/client/userController';
 
 const router = express.Router();
 
-router.get('/login', userController.login);
+router.post('/login', userController.login);
+router.post('/register', userController.register);
+router.post('/logout', userController.logout);
 
 export default router;

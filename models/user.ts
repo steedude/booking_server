@@ -1,8 +1,8 @@
 import { Schema, model } from 'mongoose';
+import type { IUser } from '../types/user';
 
-const userSchema = new Schema({
-  // 賬號
-  name: {
+const userSchema = new Schema<IUser>({
+  account: {
     type: String,
     required: true,
     unique: true,
@@ -11,17 +11,16 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  // 使用者名稱
-  username: {
+  name: {
     type: String,
-    required: true,
+    required: false,
   },
-  team_id: {
+  team: {
     type: Schema.Types.ObjectId,
-    required: true,
+    required: false,
   },
 });
 
-const User = model('User', userSchema);
+const User = model<IUser>('User', userSchema);
 
 export { User };

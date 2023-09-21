@@ -311,7 +311,7 @@ POST /api/admin/product
 | :------------- | :-------- | :----------- |
 | `name`         | `string`  | **Required** |
 | `seats`        | `number`  | **Required** |
-| `image`        | `image[]` | **Required** |
+| `image`        | `sting[]` | **Required** |
 | `description`  | `string`  | **Required** |
 | `projector`    | `number`  | **Required** |
 | `television`   | `number`  | **Required** |
@@ -350,21 +350,41 @@ GET /api/admin/products
 PUT /api/admin/product/:product_id
 ```
 
-| Parameter      | Type      | Description  |
-| :------------- | :-------- | :----------- |
-| `name`         | `string`  | **Required** |
-| `seats`        | `number`  | **Required** |
-| `image`        | `image[]` | **Required** |
-| `description`  | `string`  | **Required** |
-| `projector`    | `number`  | **Required** |
-| `television`   | `number`  | **Required** |
-| `is_confirmed` | `boolean` | **Required** |
-| `window`       | `boolean` | **Required** |
+| Parameter      | Type       | Description  |
+| :------------- | :--------- | :----------- |
+| `name`         | `string`   | **Required** |
+| `seats`        | `number`   | **Required** |
+| `image`        | `string[]` | **Required** |
+| `description`  | `string`   | **Required** |
+| `projector`    | `number`   | **Required** |
+| `television`   | `number`   | **Required** |
+| `is_confirmed` | `boolean`  | **Required** |
+| `window`       | `boolean`  | **Required** |
 
 ```ts
 {
     status: 200,
     message: 'success',
+}
+```
+
+- 商戶可以上傳會議室圖片
+
+```http
+POST /api/admin/uploadImages (form-data)
+```
+
+| Parameter | Type     | Description  |
+| :-------- | :------- | :----------- |
+| `images`  | `file[]` | **Required** |
+
+```ts
+{
+    status: 200,
+    message: 'success',
+    data: {
+        images: string[],
+    }
 }
 ```
 
@@ -491,17 +511,17 @@ POST /api/admin/reservation
 
 ### Product
 
-| Parameter      | Type      |
-| :------------- | :-------- |
-| `id`           | `string`  |
-| `name`         | `string`  |
-| `seats`        | `number`  |
-| `image`        | `image[]` |
-| `description`  | `string`  |
-| `projector`    | `number`  |
-| `television`   | `number`  |
-| `is_confirmed` | `boolean` |
-| `window`       | `boolean` |
+| Parameter      | Type       |
+| :------------- | :--------- |
+| `id`           | `string`   |
+| `name`         | `string`   |
+| `seats`        | `number`   |
+| `image`        | `string[]` |
+| `description`  | `string`   |
+| `projector`    | `number`   |
+| `television`   | `number`   |
+| `is_confirmed` | `boolean`  |
+| `window`       | `boolean`  |
 
 ### Team
 

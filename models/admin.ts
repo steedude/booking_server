@@ -1,23 +1,26 @@
 import { Schema, model } from 'mongoose';
+import type { IUser } from '../types/user';
 
-const adminSchema = new Schema({
-  // 賬號
-  name: {
+const adminSchema = new Schema<IUser>({
+  account: {
     type: String,
     required: true,
     unique: true,
-  },
-  // 使用者名稱
-  username: {
-    type: String,
-    required: true,
   },
   password: {
     type: String,
     required: true,
   },
+  name: {
+    type: String,
+    required: false,
+  },
+  team: {
+    type: Schema.Types.ObjectId,
+    required: false,
+  },
 });
 
-const Admin = model('Admin', adminSchema);
+const Admin = model<IUser>('Admin', adminSchema);
 
 export { Admin };
