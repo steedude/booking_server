@@ -17,6 +17,9 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
   },
+  globals: {
+    Express: true,
+  },
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
@@ -25,7 +28,5 @@ module.exports = {
     'object-curly-newline': 'off',
     '@typescript-eslint/no-shadow': 'error',
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '_' }],
-    'object-curly-newline': 'off',
-    'max-len': ['error', { code: 120 }],
   },
 };
