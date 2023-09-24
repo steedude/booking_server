@@ -26,11 +26,21 @@ This is an api of the booking backend, the database uses MonogoDB.
 | `POST`     | `api/register`                    | `controllers\userController@register`                   |
 | `POST`     | `api/logout`                      | `controllers\userController@logout`                     | -->
 
+### Product
+
+| Method | URI            | Action                                             |
+| ------ | -------------- | -------------------------------------------------- |
+| `GET`  | `api/products` | `controllers/client/productController@getProducts` |
+
 ### Reservation
 
-| Method | URI               | Action                                                     |
-| ------ | ----------------- | ---------------------------------------------------------- |
-| `POST` | `api/reservation` | `controllers/client/reservationController@postReservation` |
+| Method   | URI                               | Action                                                            |
+| -------- | --------------------------------- | ----------------------------------------------------------------- |
+| `POST`   | `api/reservation`                 | `controllers/client/reservationController@postReservation`        |
+| `DELETE` | `api/reservation/:reservation_id` | `controllers/client/reservationController@deleteReservation`      |
+| `GET`    | `api/reservations`                | `controllers/client/reservationController@getReservations`        |
+| `GET`    | `api/reservations/history`        | `controllers/client/reservationController@getHistoryReservations` |
+| `GET`    | `api/reservations/future`         | `controllers/client/reservationController@getFutureReservations`  |
 
 ## Admin Routes List
 
@@ -43,6 +53,12 @@ This is an api of the booking backend, the database uses MonogoDB.
 | `GET`      | `api/github/callback`             | `controllers\userController@github`                     |
 | `POST`     | `api/register`                    | `controllers\userController@register`                   |
 | `POST`     | `api/logout`                      | `controllers\userController@logout`                     | -->
+
+### Reservation
+
+| Method | URI                      | Action                                                    |
+| ------ | ------------------------ | --------------------------------------------------------- |
+| `GET`  | `api/admin/reservations` | `controllers/admin/reservationController@getReservations` |
 
 ## Illustrate
 

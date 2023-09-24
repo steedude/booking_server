@@ -5,9 +5,9 @@ import { urlencoded, json } from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
-import routes from './routes';
 dotenv.config();
 
+import routes from './routes';
 import passport from './config/passport';
 
 const port = 3000;

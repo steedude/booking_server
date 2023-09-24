@@ -15,12 +15,13 @@ const userSchema = new Schema<IUser>({
     type: String,
     required: false,
   },
-  team: {
+  team_id: {
     type: Schema.Types.ObjectId,
+    ref: 'Team',
     required: false,
   },
 });
 
 const User = model<IUser>('User', userSchema);
 
-export { User };
+export { User, IUser };

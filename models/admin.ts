@@ -15,7 +15,7 @@ const adminSchema = new Schema<IUser>({
     type: String,
     required: false,
   },
-  team: {
+  team_id: {
     type: Schema.Types.ObjectId,
     required: false,
   },
@@ -23,4 +23,4 @@ const adminSchema = new Schema<IUser>({
 
 const Admin = model<IUser>('Admin', adminSchema);
 
-export { Admin };
+export { Admin, IUser };
