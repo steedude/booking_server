@@ -13,6 +13,10 @@ This is an api of the booking backend, the database uses MonogoDB.
 ## Environment Variable
 
 - MONGODB_URI
+- JWT_SECRET
+- GOOGLE_APP_ID
+- GOOGLE_CLIENT_SECRET
+- DEFAULT_GOOGLE_PASSWORD
 
 ## Client Routes List
 
@@ -38,7 +42,7 @@ This is an api of the booking backend, the database uses MonogoDB.
 | -------- | --------------------------------- | ----------------------------------------------------------------- |
 | `POST`   | `api/reservation`                 | `controllers/client/reservationController@postReservation`        |
 | `DELETE` | `api/reservation/:reservation_id` | `controllers/client/reservationController@deleteReservation`      |
-| `GET`    | `api/reservations`                | `controllers/client/reservationController@getReservations`        |
+| `GET`    | `api/reservation/day`             | `controllers/commonController@getDayReservations`                 |
 | `GET`    | `api/reservations/history`        | `controllers/client/reservationController@getHistoryReservations` |
 | `GET`    | `api/reservations/future`         | `controllers/client/reservationController@getFutureReservations`  |
 
@@ -56,9 +60,13 @@ This is an api of the booking backend, the database uses MonogoDB.
 
 ### Reservation
 
-| Method | URI                      | Action                                                    |
-| ------ | ------------------------ | --------------------------------------------------------- |
-| `GET`  | `api/admin/reservations` | `controllers/admin/reservationController@getReservations` |
+| Method   | URI                                     | Action                                                      |
+| -------- | --------------------------------------- | ----------------------------------------------------------- |
+| `GET`    | `api/admin/reservations`                | `controllers/admin/reservationController@getReservations`   |
+| `POST`   | `api/admin/reservation`                 | `controllers/admin/reservationController@postReservation`   |
+| `PUT`    | `api/admin/reservation/:reservation_id` | `controllers/admin/reservationController@agreeReservation`  |
+| `DELETE` | `api/admin/reservation/:reservation_id` | `controllers/admin/reservationController@deleteReservation` |
+| `GET`    | `api/admin/reservation/day`             | `controllers/commonController@getDayReservations`           |
 
 ## Illustrate
 

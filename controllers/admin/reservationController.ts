@@ -15,6 +15,10 @@ const reservationController = {
       page = 1,
       page_size: limit = 30,
     } = req.body;
+
+    if (!startTime || !endTime) {
+      return res.status(400).json({ status: 400, message: 'missing required parameter' });
+    }
     const skip = +limit * (+page - 1);
     const query = {
       start_time: {
@@ -24,7 +28,7 @@ const reservationController = {
       ...(productId ? { product_id: productId } : {}),
     };
 
-    Reservation.find(query, null, { skip, limit })
+    return Reservation.find(query, null, { skip, limit })
       .populate({
         path: 'user_id',
         populate: {
@@ -46,17 +50,18 @@ const reservationController = {
           return product.seats >= seats;
         });
         const mappingReservations = filterReservations.map(
-          ({ product_id: product, user_id: userId, team_id: team, ...reservation }) => {
+          ({ product_id: product, user_id: userId, admin_id: adminId, team_id: teamId, ...reservation }) => {
             const user = userId as unknown as IUser;
+            const admin = adminId as unknown as IUser;
+            const team = (user?.team_id ?? teamId) as unknown as ITeam;
 
             return {
               ...reservation,
               product,
-              user: {
-                account: user.account,
-                name: user.name,
-              },
-              team: (user?.team_id as unknown as ITeam)?.name ?? team,
+              ...(user
+                ? { user: { account: user.account, name: user.name } }
+                : { admin: { account: admin.account, name: admin.name } }),
+              team: team.name,
             };
           },
         );
@@ -73,6 +78,35 @@ const reservationController = {
           },
         });
       })
+      .catch(error => res.status(400).json({ status: 400, message: error.message }));
+  },
+  postReservation(req: Request, res: Response) {
+    const { start_time: startTime, end_time: endTime, product_id: productId, team_id: teamId } = req.body;
+
+    if (!startTime || !endTime || !productId || !teamId) {
+      return res.status(400).json({ status: 400, message: 'missing required parameter' });
+    }
+    const reservation = new Reservation({
+      ...req.body,
+      start_time: new Date(startTime),
+      end_time: new Date(endTime),
+      confirmed: true,
+      admin_id: req.user?.id,
+    });
+
+    return reservation
+      .save()
+      .then(() => res.json({ status: 200, message: 'appointment successful' }))
+      .catch(error => res.status(400).json({ status: 400, message: error.message }));
+  },
+  agreeReservation(req: Request, res: Response) {
+    Reservation.findOneAndUpdate({ _id: req.params.reservation_id }, { confirmed: true })
+      .then(() => res.json({ status: 200, message: 'appointment with consent' }))
+      .catch(error => res.status(400).json({ status: 400, message: error.message }));
+  },
+  deleteReservation(req: Request, res: Response) {
+    Reservation.findOneAndDelete({ _id: req.params.reservation_id })
+      .then(() => res.json({ status: 200, message: 'appointment canceled' }))
       .catch(error => res.status(400).json({ status: 400, message: error.message }));
   },
 };

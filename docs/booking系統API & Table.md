@@ -144,7 +144,7 @@ GET /api/products
 - 使用者可以看今日會議室預約狀態 (永遠回傳一天的資料)
 
 ```http
-GET /api/reservations
+GET /api/reservations/day
 ```
 
 | Parameter    | Type     | Description  |
@@ -512,6 +512,29 @@ PUT /api/admin/reservation/:reservation_id
 {
     status: 200,
     message: 'success',
+}
+```
+
+- 商戶可以看今日會議室預約狀態 (永遠回傳一天的資料)
+
+```http
+GET /api/admin/reservations/day
+```
+
+| Parameter    | Type     | Description  |
+| :----------- | :------- | :----------- |
+| `start_time` | `string` | **Required** |
+
+```ts
+{
+    status: 200,
+    message: 'success',
+    data: {
+        reservations: [
+            { reservation物件 },
+            { reservation物件 },
+        ]
+    }
 }
 ```
 
