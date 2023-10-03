@@ -144,7 +144,7 @@ GET /api/products
 - 使用者可以看今日會議室預約狀態 (永遠回傳一天的資料)
 
 ```http
-GET /api/reservations/day
+GET /api/reservations
 ```
 
 | Parameter    | Type     | Description  |
@@ -164,54 +164,17 @@ GET /api/reservations/day
 }
 ```
 
-- 使用者可以查看自己歷史的預約狀態
+- 使用者可以查看自己所有的預約狀態
 
 ```http
-GET /api/reservations/history
+GET /api/myReservations
 ```
-
-| Parameter   | Type     | Description    |
-| :---------- | :------- | :------------- |
-| `page`      | `number` | **Default 1**  |
-| `page_size` | `number` | **Default 30** |
 
 ```ts
 {
     status: 200,
     message: 'success',
     data: {
-        page: number,
-        page_size: number,
-        total_page: number,
-        total_size: number,
-        reservations: [
-            { reservation物件 },
-            { reservation物件 },
-        ]
-    }
-}
-```
-
-- 使用者可以查看自己未來預約記錄
-
-```http
-GET /api/reservations/future
-```
-
-| Parameter   | Type     | Description    |
-| :---------- | :------- | :------------- |
-| `page`      | `number` | **Default 1**  |
-| `page_size` | `number` | **Default 30** |
-
-```ts
-{
-    status: 200,
-    message: 'success',
-    data: {
-        page: number,
-        page_size: number,
-        total_page: number,
-        total_size: number,
         reservations: [
             { reservation物件 },
             { reservation物件 },
@@ -368,8 +331,8 @@ POST /api/admin/product
 | `name`         | `string`  | **Required** |
 | `seats`        | `number`  | **Required** |
 | `image`        | `sting[]` | **Required** |
-| `description`  | `boolean` | **Required** |
-| `projector`    | `boolean` | **Required** |
+| `description`  | `string`  | **Required** |
+| `projector`    | `number`  | **Required** |
 | `television`   | `number`  | **Required** |
 | `is_confirmed` | `boolean` | **Required** |
 | `window`       | `boolean` | **Required** |
@@ -411,8 +374,8 @@ PUT /api/admin/product/:product_id
 | `name`         | `string`   | **Required** |
 | `seats`        | `number`   | **Required** |
 | `image`        | `string[]` | **Required** |
-| `description`  | `boolean`  | **Required** |
-| `projector`    | `boolean`  | **Required** |
+| `description`  | `string`   | **Required** |
+| `projector`    | `number`   | **Required** |
 | `television`   | `number`   | **Required** |
 | `is_confirmed` | `boolean`  | **Required** |
 | `window`       | `boolean`  | **Required** |
@@ -469,8 +432,6 @@ GET /api/admin/reservations
 | `end_time`   | `string` | **Required**   |
 | `page`       | `number` | **Default 1**  |
 | `page_size`  | `number` | **Default 30** |
-| `seats`      | `number` |                |
-| `product_id` | `string` |                |
 
 ```ts
 {
@@ -512,29 +473,6 @@ PUT /api/admin/reservation/:reservation_id
 {
     status: 200,
     message: 'success',
-}
-```
-
-- 商戶可以看今日會議室預約狀態 (永遠回傳一天的資料)
-
-```http
-GET /api/admin/reservations/day
-```
-
-| Parameter    | Type     | Description  |
-| :----------- | :------- | :----------- |
-| `start_time` | `string` | **Required** |
-
-```ts
-{
-    status: 200,
-    message: 'success',
-    data: {
-        reservations: [
-            { reservation物件 },
-            { reservation物件 },
-        ]
-    }
 }
 ```
 
@@ -587,6 +525,7 @@ POST /api/admin/reservation
 | `id`       | `string` |
 | `account`  | `string` |
 | `password` | `string` |
+| `team_id`  | `string` |
 | `name`     | `string` |
 
 ### Product
@@ -597,8 +536,8 @@ POST /api/admin/reservation
 | `name`         | `string`   |
 | `seats`        | `number`   |
 | `image`        | `string[]` |
-| `description`  | `boolean`  |
-| `projector`    | `boolean`  |
+| `description`  | `string`   |
+| `projector`    | `number`   |
 | `television`   | `number`   |
 | `is_confirmed` | `boolean`  |
 | `window`       | `boolean`  |
@@ -615,8 +554,8 @@ POST /api/admin/reservation
 | Parameter    | Type      |
 | :----------- | :-------- |
 | `id`         | `string`  |
-| `start_time` | `Date`    |
-| `end_time`   | `Date`    |
+| `start_time` | `string`  |
+| `end_time`   | `string`  |
 | `confirmed`  | `boolean` |
 | `product_id` | `string`  |
 | `user_id`    | `string`  |

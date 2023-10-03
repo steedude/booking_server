@@ -3,11 +3,11 @@ import { Schema, model } from 'mongoose';
 const reservationSchema = new Schema(
   {
     start_time: {
-      type: Date,
+      type: String,
       required: true,
     },
     end_time: {
-      type: Date,
+      type: String,
       required: true,
     },
     confirmed: {

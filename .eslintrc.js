@@ -26,12 +26,6 @@ module.exports = {
     'comma-dangle': ['error', 'only-multiline'],
     'max-len': ['error', { code: 120 }],
     'object-curly-newline': 'off',
-    'no-use-before-define': [
-      'error',
-      {
-        functions: false,
-      },
-    ],
     '@typescript-eslint/no-shadow': 'error',
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '_' }],
   },

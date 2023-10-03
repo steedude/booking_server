@@ -1,12 +1,11 @@
 import express from 'express';
-import passport from 'passport';
+// import passport from 'passport';
 import userController from '@/controllers/admin/userController';
 
 const router = express.Router();
 
-router.post('/login', passport.authenticate('AdminLogin'), userController.loginSuccess);
-router.post('/register', passport.authenticate('AdminRegister'), userController.registerSuccess);
-router.post('/googleAuth', passport.authenticate('AdminGoogle'), userController.authGoogleSuccess);
-router.post('/logout', passport.authenticate('AdminJwt', { session: false }), userController.logout);
+router.get('/login', userController.login);
+router.post('/googleAuth', userController.postAuthGoogle);
+// router.post('/login', passport.authenticate('AdminLocal'), userController.loginSuccess);
 
 export default router;
