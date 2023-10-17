@@ -34,11 +34,13 @@ This is an api of the booking backend, the database uses MonogoDB.
 
 ### Reservation
 
-| Method   | URI                               | Action                                                       |
-| -------- | --------------------------------- | ------------------------------------------------------------ |
-| `POST`   | `api/reservation`                 | `controllers/client/reservationController@postReservation`   |
-| `DELETE` | `api/reservation/:reservation_id` | `controllers/client/reservationController@deleteReservation` |
-| `GET`    | `api/reservations`                | `controllers/client/reservationController@getReservations`   |
+| Method   | URI                               | Action                                                            |
+| -------- | --------------------------------- | ----------------------------------------------------------------- |
+| `POST`   | `api/reservation`                 | `controllers/client/reservationController@postReservation`        |
+| `DELETE` | `api/reservation/:reservation_id` | `controllers/client/reservationController@deleteReservation`      |
+| `GET`    | `api/reservations`                | `controllers/client/reservationController@getReservations`        |
+| `GET`    | `api/reservations/history`        | `controllers/client/reservationController@getHistoryReservations` |
+| `GET`    | `api/reservations/future`         | `controllers/client/reservationController@getFutureReservations`  |
 
 ## Admin Routes List
 

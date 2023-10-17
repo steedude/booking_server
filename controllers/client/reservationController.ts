@@ -14,6 +14,8 @@ const reservationController = {
       const { is_confirmed: isNeedConfirmed } = product;
       const reservation = new Reservation({
         ...req.body,
+        start_time: new Date(req.body.start_time),
+        end_time: new Date(req.body.end_time),
         confirmed: !isNeedConfirmed,
         user_id: req.user?.id,
       });
@@ -38,10 +40,14 @@ const reservationController = {
       .catch(error => res.status(400).json({ status: 400, message: error.message }));
   },
   getReservations(req: Request, res: Response) {
-    const startTime = req.body.start_time.slice(0, 10);
-    const regexp = RegExp('^' + startTime);
+    const time = new Date(req.body.start_time);
 
-    Reservation.find({ start_time: regexp })
+    Reservation.find({
+      start_time: {
+        $gte: time,
+        $lt: new Date(time.getTime() + 24 * 60 * 60 * 1000),
+      },
+    })
       .populate('product_id', 'name')
       .populate('user_id', 'team_id')
       .lean()
@@ -71,6 +77,45 @@ const reservationController = {
       })
       .catch(error => res.status(400).json({ status: 400, message: error.message }));
   },
+  getHistoryReservations(req: Request, res: Response) {
+    const filter = { $lt: new Date() };
+
+    getMineReservations(req, res, filter);
+  },
+  getFutureReservations(req: Request, res: Response) {
+    const filter = { $gt: new Date() };
+
+    getMineReservations(req, res, filter);
+  },
 };
+
+function getMineReservations(req: Request, res: Response, filter: Record<string, Date>) {
+  const { page = 1, page_size: limit = 30 } = req.body;
+  const skip = +limit * (+page - 1);
+  const query = {
+    user_id: req.user?.id,
+    start_time: filter,
+  };
+
+  Reservation.find(query, null, { skip, limit })
+    .populate('product_id', 'name')
+    .exec()
+    .then(async reservations => {
+      const totalSize = await Reservation.countDocuments(query);
+
+      return res.json({
+        status: 200,
+        message: 'success',
+        data: {
+          reservations,
+          page,
+          page_size: limit,
+          total_page: Math.ceil(totalSize / limit),
+          total_size: totalSize,
+        },
+      });
+    })
+    .catch(error => res.status(400).json({ status: 400, message: error.message }));
+}
 
 export default reservationController;
