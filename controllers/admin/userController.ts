@@ -1,35 +1,51 @@
-// import jwt from 'jsonwebtoken';
 import type { Request, Response } from 'express';
-import { OAuth2Client } from 'google-auth-library';
+import * as jwt from 'jsonwebtoken';
+import { IUser } from '@/models/admin';
+
+function getLoginSuccessRes(res: Response, user: IUser) {
+  return res.json({
+    status: 200,
+    message: 'success',
+    data: {
+      token: jwt.sign({ id: user.id }, process.env.JWT_SECRET!),
+      user: {
+        account: user.account,
+        team: user.team_id,
+        name: user.name,
+      },
+    },
+  });
+}
+
+function getErrorRes(res: Response) {
+  return res.status(400).json({
+    status: 400,
+    message: 'authorization failed',
+  });
+}
+
+async function logoutFunc(req: Request, res: Response) {
+  req.logout(error => {
+    if (error) return getErrorRes(res);
+
+    return res.json({
+      status: 200,
+      message: 'success',
+    });
+  });
+}
 
 const userController = {
-  login(_: Request, res: Response) {
-    return res.json({
-      status: 'success',
-      message: 'saved successfully',
-    });
+  loginSuccess(req: Request, res: Response) {
+    return getLoginSuccessRes(res, req.user as IUser);
   },
-
-  postAuthGoogle(req: Request, res: Response) {
-    console.log(req.body);
-
-    const client = new OAuth2Client();
-    async function verify() {
-      const ticket = await client.verifyIdToken({
-        idToken: req.body.credential,
-        // Specify the CLIENT_ID of the app that accesses the backend
-        audience: '368476803835-c1fvfk2n1psur8hfjm5bh1n42a05pr2d.apps.googleusercontent.com',
-      });
-      const payload = ticket.getPayload();
-      console.log(payload);
-    }
-    verify().catch(console.error);
-
-    return res.json({
-      status: 'success',
-      message: 'saved successfully',
-    });
+  registerSuccess(req: Request, res: Response) {
+    return getLoginSuccessRes(res, req.user as IUser);
   },
+  authGoogleSuccess(req: Request, res: Response) {
+    return getLoginSuccessRes(res, req.user as IUser);
+  },
+  logout: logoutFunc,
 };
 
 export default userController;
