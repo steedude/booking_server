@@ -469,6 +469,8 @@ GET /api/admin/reservations
 | `end_time`   | `string` | **Required**   |
 | `page`       | `number` | **Default 1**  |
 | `page_size`  | `number` | **Default 30** |
+| `seats`      | `number` |                |
+| `product_id` | `string` |                |
 
 ```ts
 {
@@ -562,7 +564,6 @@ POST /api/admin/reservation
 | `id`       | `string` |
 | `account`  | `string` |
 | `password` | `string` |
-| `team_id`  | `string` |
 | `name`     | `string` |
 
 ### Product
@@ -591,8 +592,8 @@ POST /api/admin/reservation
 | Parameter    | Type      |
 | :----------- | :-------- |
 | `id`         | `string`  |
-| `start_time` | `string`  |
-| `end_time`   | `string`  |
+| `start_time` | `Date`    |
+| `end_time`   | `Date`    |
 | `confirmed`  | `boolean` |
 | `product_id` | `string`  |
 | `user_id`    | `string`  |

@@ -1,9 +1,10 @@
 import type { Request, Response } from 'express';
 import { Reservation } from '@/models/reservation';
 import { Product } from '@/models/product';
-import { Team } from '@/models/team';
+import '@/models/team';
 import { formatCatchErrorMessage } from '@/utils/errorMessage';
 import type { IUser } from '@/types/user';
+import type { ITeam } from '@/types/team';
 
 const reservationController = {
   async postReservation(req: Request, res: Response) {
@@ -49,23 +50,25 @@ const reservationController = {
       },
     })
       .populate('product_id', 'name')
-      .populate('user_id', 'team_id')
+      .populate({
+        path: 'user_id',
+        populate: {
+          path: 'team_id',
+          model: 'Team',
+        },
+      })
       .lean()
       .exec()
-      .then(async reservations => {
-        const reservationsPromises = reservations.map(
-          async ({ product_id: product, user_id: userId, ...reservation }) => {
-            const user = userId as unknown as IUser;
-            const team = await Team.findById(user.team_id);
+      .then(reservations => {
+        const mappingReservations = reservations.map(({ product_id: product, user_id: user, ...reservation }) => {
+          const team = ((user as unknown as IUser)?.team_id as unknown as ITeam)?.name;
 
-            return {
-              ...reservation,
-              product,
-              team: team?.name,
-            };
-          },
-        );
-        const mappingReservations = await Promise.all(reservationsPromises);
+          return {
+            ...reservation,
+            product,
+            team,
+          };
+        });
 
         return res.json({
           status: 200,
@@ -99,6 +102,8 @@ function getMineReservations(req: Request, res: Response, filter: Record<string,
 
   Reservation.find(query, null, { skip, limit })
     .populate('product_id', 'name')
+    .lean()
+    .sort({ start_time: 'asc', end_time: 'asc' })
     .exec()
     .then(async reservations => {
       const totalSize = await Reservation.countDocuments(query);

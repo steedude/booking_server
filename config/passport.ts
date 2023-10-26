@@ -31,14 +31,14 @@ async function verifyLocalFunc(
 }
 
 passport.use(
-  'UserLocalLogin',
+  'UserLogin',
   new LocalStrategy({ usernameField: 'account' }, (username, password, done) => {
     return verifyLocalFunc(User, username, password, done);
   }),
 );
 
 passport.use(
-  'AdminLocalLogin',
+  'AdminLogin',
   new LocalStrategy({ usernameField: 'account' }, (username, password, done) => {
     return verifyLocalFunc(Admin, username, password, done);
   }),
@@ -81,33 +81,31 @@ async function verifyRegisterFunc(
 }
 
 passport.use(
-  'UserLocalRegister',
+  'UserRegister',
   new LocalStrategy({ usernameField: 'account' }, (username, password, done) => {
     return verifyRegisterFunc(User, username, password, done);
   }),
 );
 
 passport.use(
-  'AdminLocalRegister',
+  'AdminRegister',
   new LocalStrategy({ usernameField: 'account' }, (username, password, done) => {
     return verifyRegisterFunc(Admin, username, password, done);
   }),
 );
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function verifyGoogle(target: typeof User | typeof Admin, req: any, done: VerifiedCallback) {
+async function verifyGoogle(target: typeof User | typeof Admin, credential: string | unknown, done: VerifiedCallback) {
   const client = new OAuth2Client();
-  const token = req.body?.credential;
   async function verify() {
+    if (typeof credential !== 'string') return done(undefined, false, 'credential not found!!');
     const ticket = await client.verifyIdToken({
-      idToken: token,
+      idToken: credential,
       audience: process.env.GOOGLE_CLIENT_ID,
     });
     const payload = ticket.getPayload();
     console.log(payload);
     const lowerCaseAccount = payload?.email?.toLowerCase();
-    if (!lowerCaseAccount) return new Error('email not found!!');
-
+    if (!lowerCaseAccount) return done(undefined, false, 'email not found!!');
     let user = await target.findOne({ account: lowerCaseAccount });
     if (!user) user = await registerFunc(target, lowerCaseAccount, process.env.DEFAULT_GOOGLE_PASSWORD!, payload?.name);
     return done(undefined, user, null);
@@ -116,23 +114,22 @@ async function verifyGoogle(target: typeof User | typeof Admin, req: any, done: 
 }
 
 passport.use(
-  'UserLocalGoogle',
+  'UserGoogle',
   new CustomStrategy((req, done) => {
-    return verifyGoogle(User, req, done);
+    return verifyGoogle(User, req.body?.credential, done);
   }),
 );
 
 passport.use(
-  'AdminLocalGoogle',
+  'AdminGoogle',
   new CustomStrategy((req, done) => {
-    return verifyGoogle(Admin, req, done);
+    return verifyGoogle(Admin, req.body?.credential, done);
   }),
 );
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function verifyJwtCB(target: typeof User | typeof Admin, jwtToken: any, done: VerifiedCallback) {
+async function verifyJwtCB(target: typeof User | typeof Admin, userId: number, done: VerifiedCallback) {
   try {
-    const user = (await target.findById(jwtToken.id)) || false;
+    const user = (await target.findById(userId)) || false;
     return done(undefined, user);
   } catch (err: unknown) {
     if (err) return done(err, false, null);
@@ -143,14 +140,14 @@ async function verifyJwtCB(target: typeof User | typeof Admin, jwtToken: any, do
 passport.use(
   'UserJwt',
   new passportJwt.Strategy(JWT_STRATEGY_OPTIONS, (jwtToken, done) => {
-    return verifyJwtCB(User, jwtToken, done);
+    return verifyJwtCB(User, jwtToken.id, done);
   }),
 );
 
 passport.use(
   'AdminJwt',
   new passportJwt.Strategy(JWT_STRATEGY_OPTIONS, (jwtToken, done) => {
-    return verifyJwtCB(Admin, jwtToken, done);
+    return verifyJwtCB(Admin, jwtToken.id, done);
   }),
 );
 

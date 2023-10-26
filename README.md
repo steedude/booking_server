@@ -54,6 +54,12 @@ This is an api of the booking backend, the database uses MonogoDB.
 | `POST`     | `api/register`                    | `controllers\userController@register`                   |
 | `POST`     | `api/logout`                      | `controllers\userController@logout`                     | -->
 
+### Reservation
+
+| Method | URI                      | Action                                                    |
+| ------ | ------------------------ | --------------------------------------------------------- |
+| `GET`  | `api/admin/reservations` | `controllers/admin/reservationController@getReservations` |
+
 ## Illustrate
 
 - [express](https://expressjs.com/) 是基於 Node.js 所開發的前後端網頁框架，特性為快速極簡，主要運作是在處理 HTTP 請求的函數，處理每個中介函式，再傳給下一個中間軟體的函式
