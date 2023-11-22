@@ -49,12 +49,14 @@ async function registerFunc(
   account: string,
   password: string,
   name: string | undefined = undefined,
+  image: string | undefined = undefined,
 ) {
   const hashedPassword = await bcrypt.hash(password, bcrypt.genSaltSync());
   const userDoc = {
     account,
     password: hashedPassword,
     name: name || account,
+    image,
   };
   const newUser = target === User ? new User(userDoc) : new Admin(userDoc);
   await newUser.save();
@@ -107,7 +109,18 @@ async function verifyGoogle(target: typeof User | typeof Admin, credential: stri
     const lowerCaseAccount = payload?.email?.toLowerCase();
     if (!lowerCaseAccount) return done(undefined, false, 'email not found!!');
     let user = await target.findOne({ account: lowerCaseAccount });
-    if (!user) user = await registerFunc(target, lowerCaseAccount, process.env.DEFAULT_GOOGLE_PASSWORD!, payload?.name);
+    if (!user) {
+      user = await registerFunc(
+        target,
+        lowerCaseAccount,
+        process.env.DEFAULT_GOOGLE_PASSWORD!,
+        payload?.name,
+        payload?.picture,
+      );
+    } else if (user.image !== payload?.picture) {
+      user.image = payload?.picture || '';
+      await user.updateOne({ image: user.image });
+    }
     return done(undefined, user, null);
   }
   verify().catch(console.error);

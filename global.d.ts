@@ -4,6 +4,7 @@ declare global {
   namespace Express {
     interface User {
       id: Types.ObjectId;
+      team_id: Types.ObjectId;
     }
   }
 }

@@ -1,14 +1,17 @@
 import type { Request, Response } from 'express';
 import { Reservation } from '@/models/reservation';
+import { isString } from '@/utils/checkType';
 import type { IUser } from '@/types/user';
 import type { ITeam } from '@/types/team';
 
 const commonController = {
   getDayReservations(req: Request, res: Response) {
-    if (!req.body.start_time) {
+    const { start_time: startTime } = req.query;
+
+    if (!startTime || !isString(startTime)) {
       return res.status(400).json({ status: 400, message: 'start_time is required parameter' });
     }
-    const time = new Date(req.body.start_time);
+    const time = new Date(startTime);
 
     return Reservation.find({
       start_time: {
@@ -52,5 +55,33 @@ const commonController = {
       .catch(error => res.status(400).json({ status: 400, message: error.message }));
   },
 };
+
+export async function checkReservation(start: Date, end: Date, productId: string) {
+  if (+end.valueOf() - +start.valueOf() < 30 * 60 * 1000) {
+    return 'The appointment time cannot be less than 30 minutes';
+  }
+  if (start < new Date()) {
+    return 'Unable to reserve time in the past';
+  }
+  const reservations = await Reservation.find({
+    $or: [
+      {
+        start_time: {
+          $gte: start,
+          $lt: end,
+        },
+      },
+      {
+        end_time: {
+          $gt: start,
+          $lte: end,
+        },
+      },
+    ],
+    product_id: productId,
+  }).exec();
+
+  return reservations.length ? 'Time period overlap' : '';
+}
 
 export default commonController;

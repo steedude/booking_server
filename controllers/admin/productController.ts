@@ -82,27 +82,27 @@ const productController = {
         is_confirmed: isConfirmed,
         window,
       });
-      return res.status(200).json({ status: '200', message: 'success' });
+      return res.status(200).json({ status: 200, message: 'success' });
     } catch (e) {
-      return res.status(400).json({ status: '400', message: e });
+      return res.status(400).json({ status: 400, message: e });
     }
   },
 
   async delete(req: Request, res: Response) {
     try {
       await Product.deleteOne({ _id: req.params.product_id });
-      return res.json({ status: '200', message: 'success' });
+      return res.json({ status: 200, message: 'success' });
     } catch (e) {
-      return res.status(400).json({ status: '400', message: e });
+      return res.status(400).json({ status: 400, message: e });
     }
   },
 
   async read(_: Request, res: Response) {
     try {
       const documents = await Product.find({});
-      return res.json({ status: '200', message: 'success', data: { products: documents } });
+      return res.json({ status: 200, message: 'success', data: { products: documents } });
     } catch (e) {
-      return res.status(400).json({ status: '400', message: e });
+      return res.status(400).json({ status: 400, message: e });
     }
   },
 
@@ -111,7 +111,7 @@ const productController = {
     try {
       const searchData = await Product.findById(req.params.product_id);
       if (searchData === null) {
-        return res.status(400).json({ status: '400', message: '查無此id' });
+        return res.status(400).json({ status: 400, message: '查無此id' });
       }
       const difference = searchData.image.filter((x: string) => !image.includes(x));
 
@@ -133,9 +133,9 @@ const productController = {
           window,
         },
       );
-      return res.status(200).json({ status: '200', message: 'success' });
+      return res.status(200).json({ status: 200, message: 'success' });
     } catch (e) {
-      return res.status(400).json({ status: '400', message: e });
+      return res.status(400).json({ status: 400, message: e });
     }
   },
 
@@ -152,7 +152,7 @@ const productController = {
         req.files.forEach(item => imagePaths.push(item.path));
       }
       return res.status(200).json({
-        status: '200',
+        status: 200,
         message: 'success',
         data: {
           images: imagePaths,

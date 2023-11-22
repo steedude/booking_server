@@ -11,18 +11,19 @@ POST /api/login
 | `account`  | `string` | **Required** |
 | `password` | `string` | **Required** |
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
-    data: {
-        token: string,
-        user: {
-            account: string,
-            team: string,
-            name: string,
-        }
+  "status": 200,
+  "message": "success",
+  "data": {
+    "token": "string",
+    "user": {
+      "account": "string",
+      "team": "string",
+      "name": "string",
+      "image": "string"
     }
+  }
 }
 ```
 
@@ -37,16 +38,19 @@ POST /api/register
 | `account`  | `string` | **Required** |
 | `password` | `string` | **Required** |
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
-    data: {
-        token: string,
-        user: {
-            account: string,
-        }
+  "status": 200,
+  "message": "success",
+  "data": {
+    "token": "string",
+    "user": {
+      "account": "string",
+      "team": "string",
+      "name": "string",
+      "image": "string"
     }
+  }
 }
 ```
 
@@ -60,18 +64,19 @@ POST /api/googleAuth
 | :----------- | :------- | :----------- |
 | `credential` | `string` | **Required** |
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
-    data: {
-        token: string,
-        user: {
-            account: string,
-            team: string,
-            name: string,
-        }
+  "status": 200,
+  "message": "success",
+  "data": {
+    "token": "string",
+    "user": {
+      "account": "string",
+      "team": "string",
+      "name": "string",
+      "image": "string"
     }
+  }
 }
 ```
 
@@ -81,18 +86,63 @@ POST /api/googleAuth
 GET /api/user
 ```
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
-    data: {
-        token: string,
-        user: {
-            account: string,
-            team: string,
-            name: string,
-        }
+  "status": 200,
+  "message": "success",
+  "data": {
+    "token": "string",
+    "user": {
+      "account": "string",
+      "team": "string",
+      "name": "string",
+      "image": "string"
     }
+  }
+}
+```
+
+- 使用者可以查詢組別
+
+```http
+GET /api/teams
+```
+
+```json
+{
+  "status": 200,
+  "message": "success",
+  "data": [
+    {
+      "_id": "64ed9a2995b9c78a1b2147fb",
+      "name": "Vue"
+    },
+    {
+      "_id": "6507f83d7d12cd44a5c3578f",
+      "name": "Javascript"
+    },
+    {
+      "_id": "650806b0d75b36c94e02fc44",
+      "name": "React"
+    }
+  ]
+}
+```
+
+- 使用者可以更改密碼
+
+```http
+POST /api/password
+```
+
+| Parameter  | Type     | Description  |
+| :--------- | :------- | :----------- |
+| `password` | `string` | **Required** |
+
+```json
+{
+  "status": 200,
+  "message": "success"
 }
 ```
 
@@ -102,23 +152,24 @@ GET /api/user
 POST /api/userSetting
 ```
 
-| Parameter | Type     | Description |
-| :-------- | :------- | :---------- |
-| `team`    | `string` | Optional    |
-| `name`    | `string` | Optional    |
+| Parameter | Type     | Description  |
+| :-------- | :------- | :----------- |
+| `team_id` | `string` | **Optional** |
+| `name`    | `string` | **Optional** |
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
-    data: {
-        token: string,
-        user: {
-            account: string,
-            team: string,
-            name: string,
-        }
+  "status": 200,
+  "message": "success",
+  "data": {
+    "token": "string",
+    "user": {
+      "account": "string",
+      "team": "string",
+      "name": "string",
+      "image": "string"
     }
+  }
 }
 ```
 
@@ -128,16 +179,30 @@ POST /api/userSetting
 GET /api/products
 ```
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
-    data: {
-        products: [
-            { product物件 },
-            { product物件 },
-        ]
-    }
+  "status": 200,
+  "message": "success",
+  "data": {
+    "products": [
+      {
+        "_id": "64f5965ad625440c41998522",
+        "name": "會議室Z",
+        "seats": 6,
+        "image": [
+          "1141f5ea3acc23a4d8c84737b66a2480",
+          "df99c17ab9953cd375d4d7a7e39d2c13",
+          "fake-image-1",
+          "fake-image-2"
+        ],
+        "description": "會議室Z description",
+        "projector": true,
+        "television": false,
+        "window": false,
+        "is_confirmed": true
+      }
+    ]
+  }
 }
 ```
 
@@ -147,20 +212,31 @@ GET /api/products
 GET /api/reservations/day
 ```
 
-| Parameter    | Type     | Description  |
-| :----------- | :------- | :----------- |
-| `start_time` | `string` | **Required** |
+| Parameter(Query) | Type     | Description  |
+| :--------------- | :------- | :----------- |
+| `start_time`     | `string` | **Required** |
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
-    data: {
-        reservations: [
-            { reservation物件 },
-            { reservation物件 },
-        ]
-    }
+  "status": 200,
+  "message": "success",
+  "data": {
+    "reservations": [
+      {
+        "_id": "64f9678fda9b40361d6d0aea",
+        "start_time": "2023-09-05T02:00:00.000Z",
+        "end_time": "2023-09-05T04:00:00.000Z",
+        "confirmed": false,
+        "createdAt": "2023-09-07T06:02:55.185Z",
+        "updatedAt": "2023-09-07T06:02:55.185Z",
+        "product": {
+          "_id": "64f5965ad625440c41998522",
+          "name": "會議室Z"
+        },
+        "team": "Vue"
+      }
+    ]
+  }
 }
 ```
 
@@ -170,25 +246,36 @@ GET /api/reservations/day
 GET /api/reservations/history
 ```
 
-| Parameter   | Type     | Description    |
-| :---------- | :------- | :------------- |
-| `page`      | `number` | **Default 1**  |
-| `page_size` | `number` | **Default 30** |
+| Parameter(Query) | Type     | Description    |
+| :--------------- | :------- | :------------- |
+| `page`           | `number` | **Default 1**  |
+| `page_size`      | `number` | **Default 30** |
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
-    data: {
-        page: number,
-        page_size: number,
-        total_page: number,
-        total_size: number,
-        reservations: [
-            { reservation物件 },
-            { reservation物件 },
-        ]
-    }
+  "status": 200,
+  "message": "success",
+  "data": {
+    "page": 2,
+    "page_size": 2,
+    "total_page": 1,
+    "total_size": 2,
+    "reservations": [
+      {
+        "_id": "64f9678fda9b40361d6d0aea",
+        "start_time": "2023-09-05T02:00:00.000Z",
+        "end_time": "2023-09-05T04:00:00.000Z",
+        "confirmed": false,
+        "product_id": {
+          "_id": "64f5965ad625440c41998522",
+          "name": "會議室Z"
+        },
+        "user_id": "64f6a2901ce52419f9436215",
+        "createdAt": "2023-09-07T06:02:55.185Z",
+        "updatedAt": "2023-09-07T06:02:55.185Z"
+      }
+    ]
+  }
 }
 ```
 
@@ -198,25 +285,36 @@ GET /api/reservations/history
 GET /api/reservations/future
 ```
 
-| Parameter   | Type     | Description    |
-| :---------- | :------- | :------------- |
-| `page`      | `number` | **Default 1**  |
-| `page_size` | `number` | **Default 30** |
+| Parameter(Query) | Type     | Description    |
+| :--------------- | :------- | :------------- |
+| `page`           | `number` | **Default 1**  |
+| `page_size`      | `number` | **Default 30** |
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
-    data: {
-        page: number,
-        page_size: number,
-        total_page: number,
-        total_size: number,
-        reservations: [
-            { reservation物件 },
-            { reservation物件 },
-        ]
-    }
+  "status": 200,
+  "message": "success",
+  "data": {
+    "page": 2,
+    "page_size": 2,
+    "total_page": 1,
+    "total_size": 2,
+    "reservations": [
+      {
+        "_id": "64f9678fda9b40361d6d0aea",
+        "start_time": "2023-09-05T02:00:00.000Z",
+        "end_time": "2023-09-05T04:00:00.000Z",
+        "confirmed": false,
+        "product_id": {
+          "_id": "64f5965ad625440c41998522",
+          "name": "會議室Z"
+        },
+        "user_id": "64f6a2901ce52419f9436215",
+        "createdAt": "2023-09-07T06:02:55.185Z",
+        "updatedAt": "2023-09-07T06:02:55.185Z"
+      }
+    ]
+  }
 }
 ```
 
@@ -232,10 +330,10 @@ POST /api/reservation
 | `end_time`   | `string` | **Required** |
 | `product_id` | `string` | **Required** |
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
+  "status": 200,
+  "message": "success"
 }
 ```
 
@@ -245,10 +343,10 @@ POST /api/reservation
 DELETE /api/reservation/:reservation_id
 ```
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
+  "status": 200,
+  "message": "success"
 }
 ```
 
@@ -265,18 +363,18 @@ POST /api/admin/login
 | `account`  | `string` | **Required** |
 | `password` | `string` | **Required** |
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
-    data: {
-        token: string,
-        user: {
-            account: string,
-            team: string,
-            name: string,
-        }
+  "status": 200,
+  "message": "success",
+  "data": {
+    "token": "string",
+    "user": {
+      "account": "string",
+      "team": "string",
+      "name": "string"
     }
+  }
 }
 ```
 
@@ -291,18 +389,18 @@ POST /api/admin/register
 | `account`  | `string` | **Required** |
 | `password` | `string` | **Required** |
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
-    data: {
-        token: string,
-        user: {
-            account: string,
-            team: string,
-            name: string,
-        }
+  "status": 200,
+  "message": "success",
+  "data": {
+    "token": "string",
+    "user": {
+      "account": "string",
+      "team": "string",
+      "name": "string"
     }
+  }
 }
 ```
 
@@ -316,18 +414,18 @@ POST /api/admin/googleAuth
 | :----------- | :------- | :----------- |
 | `credential` | `string` | **Required** |
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
-    data: {
-        token: string,
-        user: {
-            account: string,
-            team: string,
-            name: string,
-        }
+  "status": 200,
+  "message": "success",
+  "data": {
+    "token": "string",
+    "user": {
+      "account": "string",
+      "team": "string",
+      "name": "string"
     }
+  }
 }
 ```
 
@@ -337,23 +435,23 @@ POST /api/admin/googleAuth
 POST /api/admin/userSetting
 ```
 
-| Parameter | Type     | Description |
-| :-------- | :------- | :---------- |
-| `team`    | `string` | Optional    |
-| `name`    | `string` | Optional    |
+| Parameter | Type     | Description  |
+| :-------- | :------- | :----------- |
+| `team_id` | `string` | **Optional** |
+| `name`    | `string` | **Optional** |
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
-    data: {
-        token: string,
-        user: {
-            account: string,
-            team: string,
-            name: string,
-        }
+  "status": 200,
+  "message": "success",
+  "data": {
+    "token": "string",
+    "user": {
+      "account": "string",
+      "team": "string",
+      "name": "string"
     }
+  }
 }
 ```
 
@@ -374,10 +472,10 @@ POST /api/admin/product
 | `is_confirmed` | `boolean` | **Required** |
 | `window`       | `boolean` | **Required** |
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
+  "status": 200,
+  "message": "success"
 }
 ```
 
@@ -387,16 +485,30 @@ POST /api/admin/product
 GET /api/admin/products
 ```
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
-    data: {
-        products: [
-            { product物件 },
-            { product物件 },
-        ]
-    }
+  "status": 200,
+  "message": "success",
+  "data": {
+    "products": [
+      {
+        "_id": "64f5965ad625440c41998522",
+        "name": "會議室Z",
+        "seats": 6,
+        "image": [
+          "1141f5ea3acc23a4d8c84737b66a2480",
+          "df99c17ab9953cd375d4d7a7e39d2c13",
+          "fake-image-1",
+          "fake-image-2"
+        ],
+        "description": "會議室Z description",
+        "projector": true,
+        "television": false,
+        "window": false,
+        "is_confirmed": true
+      }
+    ]
+  }
 }
 ```
 
@@ -417,10 +529,10 @@ PUT /api/admin/product/:product_id
 | `is_confirmed` | `boolean`  | **Required** |
 | `window`       | `boolean`  | **Required** |
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
+  "status": 200,
+  "message": "success"
 }
 ```
 
@@ -434,13 +546,13 @@ POST /api/admin/uploadImages (form-data)
 | :-------- | :------- | :----------- |
 | `images`  | `file[]` | **Required** |
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
-    data: {
-        images: string[],
-    }
+  "status": 200,
+  "message": "success",
+  "data": {
+    "images": ["string", "string"]
+  }
 }
 ```
 
@@ -450,10 +562,10 @@ POST /api/admin/uploadImages (form-data)
 DELETE /api/admin/product/:product_id
 ```
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
+  "status": 200,
+  "message": "success"
 }
 ```
 
@@ -463,29 +575,56 @@ DELETE /api/admin/product/:product_id
 GET /api/admin/reservations
 ```
 
-| Parameter    | Type     | Description    |
-| :----------- | :------- | :------------- |
-| `start_time` | `string` | **Required**   |
-| `end_time`   | `string` | **Required**   |
-| `page`       | `number` | **Default 1**  |
-| `page_size`  | `number` | **Default 30** |
-| `seats`      | `number` |                |
-| `product_id` | `string` |                |
+| Parameter(Query) | Type       | Description    |
+| :--------------- | :--------- | :------------- |
+| `start_time`     | `string`   | **Required**   |
+| `end_time`       | `string`   | **Required**   |
+| `page`           | `number`   | **Default 1**  |
+| `page_size`      | `number`   | **Default 30** |
+| `seats`          | `number`   | **Optional**   |
+| `product_id`     | `string[]` | **Optional**   |
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
-    data: {
-        page: number,
-        page_size: number,
-        total_page: number,
-        total_size: number,
-        reservations: [
-            { reservation物件 },
-            { reservation物件 },
-        ]
-    }
+  "status": 200,
+  "message": "success",
+  "data": {
+    "page": 1,
+    "page_size": 2,
+    "total_page": 2,
+    "total_size": 2,
+    "reservations": [
+      {
+        "_id": "64f9678fda9b40361d6d0aea",
+        "start_time": "2023-09-05T02:00:00.000Z",
+        "end_time": "2023-09-05T04:00:00.000Z",
+        "confirmed": false,
+        "createdAt": "2023-09-07T06:02:55.185Z",
+        "updatedAt": "2023-09-07T06:02:55.185Z",
+        "product": {
+          "_id": "64f5965ad625440c41998522",
+          "name": "會議室Z",
+          "seats": 6,
+          "image": [
+            "1141f5ea3acc23a4d8c84737b66a2480",
+            "df99c17ab9953cd375d4d7a7e39d2c13",
+            "fake-image-1",
+            "fake-image-2"
+          ],
+          "description": "會議室Z description",
+          "projector": true,
+          "television": false,
+          "window": false,
+          "is_confirmed": true
+        },
+        "user": {
+          "account": "account-name",
+          "name": "nickname"
+        },
+        "team": "Vue"
+      }
+    ]
+  }
 }
 ```
 
@@ -495,10 +634,10 @@ GET /api/admin/reservations
 DELETE /api/admin/reservation/:reservation_id
 ```
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
+  "status": 200,
+  "message": "success"
 }
 ```
 
@@ -508,10 +647,10 @@ DELETE /api/admin/reservation/:reservation_id
 PUT /api/admin/reservation/:reservation_id
 ```
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
+  "status": 200,
+  "message": "success"
 }
 ```
 
@@ -521,20 +660,31 @@ PUT /api/admin/reservation/:reservation_id
 GET /api/admin/reservations/day
 ```
 
-| Parameter    | Type     | Description  |
-| :----------- | :------- | :----------- |
-| `start_time` | `string` | **Required** |
+| Parameter(Query) | Type     | Description  |
+| :--------------- | :------- | :----------- |
+| `start_time`     | `string` | **Required** |
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
-    data: {
-        reservations: [
-            { reservation物件 },
-            { reservation物件 },
-        ]
-    }
+  "status": 200,
+  "message": "success",
+  "data": {
+    "reservations": [
+      {
+        "_id": "64f9678fda9b40361d6d0aea",
+        "start_time": "2023-09-05T02:00:00.000Z",
+        "end_time": "2023-09-05T04:00:00.000Z",
+        "confirmed": false,
+        "createdAt": "2023-09-07T06:02:55.185Z",
+        "updatedAt": "2023-09-07T06:02:55.185Z",
+        "product": {
+          "_id": "64f5965ad625440c41998522",
+          "name": "會議室Z"
+        },
+        "team": "Vue"
+      }
+    ]
+  }
 }
 ```
 
@@ -551,10 +701,84 @@ POST /api/admin/reservation
 | `product_id` | `string` | **Required** |
 | `team_id`    | `string` | **Required** |
 
-```ts
+```json
 {
-    status: 200,
-    message: 'success',
+  "status": 200,
+  "message": "success"
+}
+```
+
+- Admin可以查詢組別
+
+```http
+GET /api/admin/teams
+```
+
+```json
+{
+  "status": 200,
+  "message": "success",
+  "data": [
+    {
+      "_id": "64ed9a2995b9c78a1b2147fb",
+      "name": "Vue"
+    },
+    {
+      "_id": "6507f83d7d12cd44a5c3578f",
+      "name": "Javascript"
+    },
+    {
+      "_id": "650806b0d75b36c94e02fc44",
+      "name": "React"
+    }
+  ]
+}
+```
+
+- Admin可以建立組別
+
+```http
+POST /api/admin/team
+```
+
+| Parameter | Type     | Description  |
+| :-------- | :------- | :----------- |
+| `name`    | `string` | **Required** |
+
+```json
+{
+  "status": 200,
+  "message": "success"
+}
+```
+
+- Admin可以更新組別
+
+```http
+PUT /api/admin/team
+```
+
+| Parameter | Type     | Description  |
+| :-------- | :------- | :----------- |
+| `name`    | `string` | **Required** |
+
+```json
+{
+  "status": 200,
+  "message": "success"
+}
+```
+
+- Admin可以刪除組別
+
+```http
+DELETE /api/admin/team/:team_id
+```
+
+```json
+{
+  "status": 200,
+  "message": "success"
 }
 ```
 

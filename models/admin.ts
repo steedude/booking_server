@@ -19,6 +19,9 @@ const adminSchema = new Schema<IUser>({
     type: Schema.Types.ObjectId,
     required: false,
   },
+  image: {
+    type: String,
+  },
 });
 
 const Admin = model<IUser>('Admin', adminSchema);

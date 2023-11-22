@@ -20,6 +20,9 @@ const userSchema = new Schema<IUser>({
     ref: 'Team',
     required: false,
   },
+  image: {
+    type: String,
+  },
 });
 
 const User = model<IUser>('User', userSchema);

@@ -31,9 +31,9 @@ Passport 是 express 上用以專門處理身份驗證的模組，原理是利�
     {
       _id: 2,
       account: 'user02',
-      password: '$2b$10$.
       // '5678' encrypted by bcrypt
-      DSsxhvpOi8nPwajJFCKTuT663yAtwMVLagYdTLWmAP.LGxPOEB2C' }
+      password: '$2b$10$DSsxhvpOi8nPwajJFCKTuT663yAtwMVLagYdTLWmAP.LGxPOEB2C'
+    }
   ]
 ```
 
@@ -52,7 +52,7 @@ User model 提供兩個 methods：findById 與 findOne，利用 id 與 account �
     user.findById(id);
 
     return done(undefined, user);
-  } catch (err: unknown) {
+  } catch (err) {
     console.log(err);
     return done(err, false, null);
   }
@@ -63,7 +63,7 @@ User model 提供兩個 methods：findById 與 findOne，利用 id 與 account �
     user.findOne({ account });
 
     return done(undefined, user);
-  } catch (err: unknown) {
+  } catch (err) {
     console.log(err);
     return done(err, false, null);
   }
@@ -149,7 +149,7 @@ router.post('/logout', passport.authenticate('UserJwt', { session: false }), use
 這裡的serializeUser是用來將user物件轉成id, deserializeUser是用來將id轉成user物件, 這樣就可以在req.user中取得user物件了.
 
 ```
-passport.serializeUser((user: Express.User, done) => {
+passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 

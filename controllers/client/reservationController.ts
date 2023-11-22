@@ -2,6 +2,7 @@ import type { Request, Response } from 'express';
 import { Reservation } from '@/models/reservation';
 import { Product } from '@/models/product';
 import '@/models/team';
+import { checkReservation } from '@/controllers/commonController';
 import { formatCatchErrorMessage } from '@/utils/errorMessage';
 
 const reservationController = {
@@ -9,17 +10,25 @@ const reservationController = {
     try {
       const { start_time: startTime, end_time: endTime, product_id: productId } = req.body;
 
+      if (!req.user?.team_id) {
+        throw new Error('please set your team first');
+      }
       if (!startTime || !endTime || !productId) {
         throw new Error('missing required parameter');
       }
       const product = await Product.findById(productId).exec();
 
       if (!product) throw new Error('The product_id could not be found');
+      const start = new Date(startTime);
+      const end = new Date(endTime);
+      const errorMessage = await checkReservation(start, end, productId);
+
+      if (errorMessage) throw new Error(errorMessage);
       const { is_confirmed: isNeedConfirmed } = product;
       const reservation = new Reservation({
         ...req.body,
-        start_time: new Date(startTime),
-        end_time: new Date(endTime),
+        start_time: start,
+        end_time: end,
         confirmed: !isNeedConfirmed,
         user_id: req.user?.id,
       });
@@ -51,14 +60,14 @@ const reservationController = {
 };
 
 function getMineReservations(req: Request, res: Response, filter: Record<string, Date>) {
-  const { page = 1, page_size: limit = 30 } = req.body;
+  const { page = 1, page_size: limit = 30 } = req.query;
   const skip = +limit * (+page - 1);
   const query = {
     user_id: req.user?.id,
     start_time: filter,
   };
 
-  Reservation.find(query, null, { skip, limit })
+  Reservation.find(query, null, { skip, limit: +limit })
     .populate('product_id', 'name')
     .lean()
     .sort({ start_time: 'asc', end_time: 'asc' })
@@ -72,8 +81,8 @@ function getMineReservations(req: Request, res: Response, filter: Record<string,
         data: {
           reservations,
           page,
-          page_size: limit,
-          total_page: Math.ceil(totalSize / limit),
+          page_size: +limit,
+          total_page: Math.ceil(totalSize / +limit),
           total_size: totalSize,
         },
       });
