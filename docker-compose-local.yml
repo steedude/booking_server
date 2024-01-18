@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo
+    restart: always
+    volumes:
+      - db-data:/data/db
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: asdf
+
+  redis:
+    image: redis
+    command: redis-server --requirepass asdf
+    ports:
+      - '6379:6379'
+
+volumes:
+  db-data:

@@ -4,8 +4,9 @@ import session from 'express-session';
 import { urlencoded, json } from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import * as dotenv from 'dotenv';
-dotenv.config();
+
+import dotenv from 'dotenv';
+dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
 import routes from './routes';
 import passport from './config/passport';
