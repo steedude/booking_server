@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis
+    command: redis-server --requirepass asdf
+    ports:
+      - '6379:6379'
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    command: sh -c "pnpm install && pnpm run start"
+    restart: always
+    ports:
+      - 8080:8080
+    working_dir: /app
+    depends_on:
+      - mongodb
+    environment:
+      - VIRTUAL_HOST=reservation.t65k2.com
+      - LETSENCRYPT_HOST=reservation.t65k2.com
+      - LETSENCRYPT_EMAIL=steedude@gmail.com
+      - VIRTUAL_PORT=8080
+
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy
+    labels:
+      - 'com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy'
+    ports:
+      - 80:80
+      - 443:443
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - certs:/etc/nginx/certs
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+
+  nginx-proxy-acme:
+    image: nginxproxy/acme-companion
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - acme:/etc/acme.sh
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - certs:/etc/nginx/certs
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+    environment:
+      - DEFAULT_EMAIL=steedude@gmail.com
+
+volumes:
+  db-data:
+  vhost:
+  html:
+  certs:
+  acme:

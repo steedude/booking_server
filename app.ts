@@ -11,7 +11,7 @@ dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 import routes from './routes';
 import passport from './config/passport';
 
-const port = 3000;
+const port = 8080;
 const app = express();
 
 app.use(urlencoded({ extended: false }));
