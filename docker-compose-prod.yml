@@ -27,9 +27,6 @@ services:
       - internal_network
       - external_network
 
-volumes:
-  db-data:
-
 networks:
   internal_network:
     driver: bridge
