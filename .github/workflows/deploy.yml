@@ -24,5 +24,5 @@ jobs:
             if [[ ! $(docker ps -q -f name=^nginx$) ]]; then
               docker compose -f docker-compose-nginx.yml up -d
             fi
-            docker compose -p app-prod -f dc-service.yml build
-            docker compose -p app-prod -f dc-service.yml up -d
+            docker compose -p app-prod -f docker-compose-prod.yml build
+            docker compose -p app-prod -f docker-compose-prod.yml up -d
