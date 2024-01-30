@@ -19,9 +19,9 @@ services:
     depends_on:
       - redis
     environment:
-      - VIRTUAL_HOST=reservation.t65k2.com
+      - VIRTUAL_HOST=reservation.api.t65k2.com
       - VIRTUAL_PORT=8080
-      - LETSENCRYPT_HOST=reservation.t65k2.com
+      - LETSENCRYPT_HOST=reservation.api.t65k2.com
       - LETSENCRYPT_EMAIL=steedude@gmail.com
     networks:
       - internal_network
