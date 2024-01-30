@@ -10,7 +10,8 @@ import type { QueueOptions } from 'bullmq';
  */
 const opts: QueueOptions = {
   connection: {
-    host: 'localhost',
+    host: process.env.NODE_ENV === 'local' ? 'localhost' : 'redis',
+    // host: 'localhost',
     port: 6379,
     password: 'asdf',
   },
