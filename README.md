@@ -87,4 +87,4 @@ This is an api of the booking backend, the database uses MonogoDB.
 - Schema 統一放置在 `models` 資料夾中
 - API 邏輯分別放在 `controllers/client` 和 `controllers/admin` 中實作
 - API route 分別放在 `routes/client` 和 `routes/admin` 中依照 Schema 分類各自開立檔案，並由同層 `index.ts` 統一設置
-- 本地端開發指令先輸入`docker-compose -f docker-compose-local.yml up`再輸入`pnpm run start`
+- 本地端開發指令先輸入`docker-compose -f docker-compose-local.yml up`再輸入`pnpm run dev`
