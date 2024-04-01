@@ -1,6 +1,6 @@
 # booking-server
 
-使用mongoDB的會議室預約系統後端專案，包含客戶端和管理端的api。
+會議室預約系統後端專案，使用mongoDB，包含客戶端和管理端的api。
 
 ## 環境變數
 
