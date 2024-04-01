@@ -2,14 +2,6 @@
 
 會議室預約系統後端專案，使用mongoDB，包含客戶端和管理端的api。
 
-## 環境變數
-
-- MONGODB_URI
-- JWT_SECRET
-- GOOGLE_APP_ID
-- GOOGLE_CLIENT_SECRET
-- DEFAULT_GOOGLE_PASSWORD
-
 ## 客戶端api
 
 ### Product
