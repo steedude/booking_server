@@ -1,16 +1,8 @@
 # booking-server
 
-This is an api of the booking backend, the database uses MonogoDB.
+使用mongoDB的會議室預約系統後端專案，包含客戶端和管理端的api。
 
-## Features
-
-- RESTful routing
-- Models with proper relationships
-- Controllers/Models etc with proper separation of concerns
-- JWT Authentication
-- RESTful errors
-
-## Environment Variable
+## 環境變數
 
 - MONGODB_URI
 - JWT_SECRET
@@ -18,17 +10,7 @@ This is an api of the booking backend, the database uses MonogoDB.
 - GOOGLE_CLIENT_SECRET
 - DEFAULT_GOOGLE_PASSWORD
 
-## Client Routes List
-
-<!-- ### User
-
-| Method     | URI                               | Action                                                  |
-|------------|-----------------------------------|---------------------------------------------------------|
-| `POST`     | `api/login`                       | `controllers\userController@login`                      |
-| `GET`      | `api/github`                      | `auth redirect`                                         |
-| `GET`      | `api/github/callback`             | `controllers\userController@github`                     |
-| `POST`     | `api/register`                    | `controllers\userController@register`                   |
-| `POST`     | `api/logout`                      | `controllers\userController@logout`                     | -->
+## 客戶端api
 
 ### Product
 
@@ -46,19 +28,9 @@ This is an api of the booking backend, the database uses MonogoDB.
 | `GET`    | `api/reservations/history`        | `controllers/client/reservationController@getHistoryReservations` |
 | `GET`    | `api/reservations/future`         | `controllers/client/reservationController@getFutureReservations`  |
 
-## Admin Routes List
+## 管理端api
 
-<!-- ### User
-
-| Method     | URI                               | Action                                                  |
-|------------|-----------------------------------|---------------------------------------------------------|
-| `POST`     | `api/login`                       | `controllers\userController@login`                      |
-| `GET`      | `api/github`                      | `auth redirect`                                         |
-| `GET`      | `api/github/callback`             | `controllers\userController@github`                     |
-| `POST`     | `api/register`                    | `controllers\userController@register`                   |
-| `POST`     | `api/logout`                      | `controllers\userController@logout`                     | -->
-
-### Reservation
+## Reservation
 
 | Method   | URI                                     | Action                                                      |
 | -------- | --------------------------------------- | ----------------------------------------------------------- |
@@ -68,7 +40,7 @@ This is an api of the booking backend, the database uses MonogoDB.
 | `DELETE` | `api/admin/reservation/:reservation_id` | `controllers/admin/reservationController@deleteReservation` |
 | `GET`    | `api/admin/reservation/day`             | `controllers/commonController@getDayReservations`           |
 
-## Illustrate
+## 套件
 
 - [express](https://expressjs.com/) 是基於 Node.js 所開發的前後端網頁框架，特性為快速極簡，主要運作是在處理 HTTP 請求的函數，處理每個中介函式，再傳給下一個中間軟體的函式
 - [body-parser](https://github.com/expressjs/body-parser) 是 express 經常使用的中介軟體，用於解析請求的資料(body)，本專案使用 <code>extended: false</code> 採用 querystring 進行解析
@@ -82,7 +54,7 @@ This is an api of the booking backend, the database uses MonogoDB.
 - [passport](https://www.passportjs.org/) 處理驗證的 middleware
 - [mongoose](https://mongoosejs.com/docs/) 是一個 ODM 套件，採用 schema-based 讓我們能用較簡單的方式來操作 MongoDB
 
-## Development Note
+## 資料夾結構
 
 - Schema 統一放置在 `models` 資料夾中
 - API 邏輯分別放在 `controllers/client` 和 `controllers/admin` 中實作
