@@ -6,13 +6,13 @@
 
 ## 客戶端api
 
-### Product
+### client_product
 
 | Method | URI            | Action                                             |
 | ------ | -------------- | -------------------------------------------------- |
 | `GET`  | `api/products` | `controllers/client/productController@getProducts` |
 
-### Reservation
+### client_reservation
 
 | Method   | URI                               | Action                                                            |
 | -------- | --------------------------------- | ----------------------------------------------------------------- |
@@ -24,7 +24,7 @@
 
 ## 管理端api
 
-## Reservation
+## admin_reservation
 
 | Method   | URI                                     | Action                                                      |
 | -------- | --------------------------------------- | ----------------------------------------------------------- |
@@ -33,6 +33,21 @@
 | `PUT`    | `api/admin/reservation/:reservation_id` | `controllers/admin/reservationController@agreeReservation`  |
 | `DELETE` | `api/admin/reservation/:reservation_id` | `controllers/admin/reservationController@deleteReservation` |
 | `GET`    | `api/admin/reservation/day`             | `controllers/commonController@getDayReservations`           |
+
+## 本地端測試
+
+```bash
+docker compose -f docker-compose-local.yml up -d
+```
+
+```bash
+pnpm run dev
+```
+
+## 伺服器上部署
+
+伺服器放在racknerd，透過github自動部署，部署在
+[reservation.api.t65k2.com](https://reservation.api.t65k2.com/)
 
 ## 套件
 
