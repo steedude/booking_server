@@ -1,5 +1,7 @@
 # booking-server
 
+## 專案描述
+
 會議室預約系統後端專案，使用mongoDB，包含客戶端和管理端的api。
 
 ## 客戶端api
